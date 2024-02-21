@@ -3,30 +3,23 @@ package com.example.textrpggame
 fun main() {
     val worldName = "스코월드"
 
-    println("이름을 입력해주세요")
-    var myName = readLine()!!
+    var myName = inputMyInfo("name").toString()
 
-    println("나이를 입력해주세요")
-    var myAge = readLine()!!.toInt()
+    var myAge = inputMyInfo("age").toString().toInt()
 
-    println("직업을 입력해주세요")
-    var myJob = readLine()!!
+    var myJob = inputMyInfo("job").toString()
 
-    println("성별을 입력해주세요")
-    var myGender = readLine()!!
+    var myGender = inputMyInfo("gender").toString()
 
-    println("초기자본을 입력해주세요")
-    var myMoney = readLine()!!.toInt()
+    var myMoney = inputMyInfo("money").toString().toInt()
 
-    println("초기체력 입력해주세요")
-    var myHp = readLine()!!.toInt()
-    var myMp = 0
+    var myHp = inputMyInfo("hp").toString().toInt()
 
     var isNamePass = true
     var isAgePass = true
     var isJobPass = true
 
-    var names = arrayOf("참새", "꿩", "비둘기")
+    var names = mutableListOf("참새", "꿩", "비둘기")
     for(name in names) {
         if(myName == name) {
             println("중복된 이름이 존재합니다.")
@@ -46,26 +39,65 @@ fun main() {
 
     // 모든 조건을 통과한 경우에만 환영
     if(isNamePass && isAgePass && isJobPass) {
+        // 새로 이름 추가
+        names.add(myName)
         displayInfo(worldName, myName, myAge, myJob)
 
         if(myJob == "마법사") {
             println("마법사는 초기 mp도 입력해주세요")
-            myMp = readLine()!!.toInt()
+            var myMp = inputMyInfo("mp").toString().toInt()
             var myCharacter = Wizard(myName, myAge, myGender, myMoney, myHp, myMp)
 
-            println("던전을 선택해주세요")
-            println("[1] 슬라임동굴, [2] 좀비마을")
-            var selectWorld = readLine()!!.toInt()
-            selectWorldByWizard(selectWorld, myCharacter)
+            while(true) {
+                println("[1] 슬라임동굴, [2] 좀비마을, [3] 캐쉬샵, [4] 종료")
+                var selectNumber= inputMyInfo("selectNumber").toString().toInt()
 
+                when(selectNumber) {
+                    1 -> {
+                        selectWorldByWizard(1, myCharacter)
+                    }
+                    2 -> {
+                        selectWorldByWizard(2, myCharacter)
+                    }
+                    3 -> {
+                        openCashShopByWizard(myCharacter)
+                    }
+                    4 -> {
+                        println("게임 종료")
+                        break
+                    }
+                    else -> {
+                        break
+                    }
+                }
+            }
         } else if(myJob == "궁수") {
             println("궁수를 선택했군요")
             var myCharacter = Archer(myName, myAge, myGender, myMoney, myHp)
 
-            println("던전을 선택해주세요")
-            println("[1] 슬라임동굴, [2] 좀비마을")
-            var selectWorld = readLine()!!.toInt()
-            selectWorldByArcher(selectWorld, myCharacter)
+            while(true) {
+                println("[1] 슬라임동굴, [2] 좀비마을, [3] 캐쉬샵, [4] 종료")
+                var selectNumber= inputMyInfo("selectNumber").toString().toInt()
+
+                when(selectNumber) {
+                    1 -> {
+                        selectWorldByArcher(1, myCharacter)
+                    }
+                    2 -> {
+                        selectWorldByArcher(2, myCharacter)
+                    }
+                    3 -> {
+                        openCashShopByArcher(myCharacter)
+                    }
+                    4 -> {
+                        println("게임 종료")
+                        break
+                    }
+                    else -> {
+                        break
+                    }
+                }
+            }
         }
     }
 }
@@ -107,4 +139,140 @@ fun selectWorldByWizard(selectWorld:Int, myCharacter: Wizard) {
         zombie1.virus()
         myCharacter.fireBall()
     }
+}
+
+fun inputMyInfo(type:String): Any? {
+    return when(type) {
+        "name" -> {
+            println("이름을 입력해주세요")
+            while(true) {
+                try {
+                    var originName = readLine()
+                    if(originName?.first() != '_' && originName?.first() != '!') {
+                        return originName
+                    } else {
+                        println("이름을 다시 입력해주세요")
+                    }
+                } catch(e:Exception) {
+                    println("이름을 다시 입력해주세요")
+                }
+            }
+        }
+        "age" -> {
+            println("나이를 입력해주세요")
+            while(true) {
+                try {
+                    var originAge:String? = readLine()
+                    return originAge?.toInt() ?: -1
+                } catch(e:Exception) {
+                    println("나이를 다시 입력해주세요")
+                }
+            }
+        }
+        "job" -> {
+            println("직업을 입력해주세요")
+            while(true) {
+                try {
+                    var originName = readLine()
+                    if(originName?.equals("궁수") == true || originName?.equals("마법사") == true) {
+                        return originName
+                    } else {
+                        println("직업을 다시 입력해주세요")
+                    }
+                } catch(e:Exception) {
+                    println("직업을 다시 입력해주세요")
+                }
+            }
+        }
+        "gender" -> {
+            println("성별을 입력해주세요")
+            while(true) {
+                try {
+                    var originGender = readLine()
+                    if(originGender?.equals("남") == true || originGender?.equals("여") == true) {
+                        return originGender
+                    } else {
+                        println("성별을 다시 입력해주세요")
+                    }
+                } catch(e:Exception) {
+                    println("성별을 다시 입력해주세요")
+                }
+            }
+        }
+        "money" -> {
+            println("초기자본을 입력해주세요")
+            while(true) {
+                try {
+                    var originMoney:String? = readLine()
+                    return originMoney?.toInt() ?: -1
+                } catch(e:Exception) {
+                    println("초기자본을 다시 입력해주세요")
+                }
+            }
+        }
+        "hp" -> {
+            println("초기체력을 입력해주세요")
+            while(true) {
+                try {
+                    var originHp:String? = readLine()
+                    return originHp?.toInt() ?: -1
+                } catch(e:Exception) {
+                    println("초기체력을 다시 입력해주세요")
+                }
+            }
+        }
+        "mp" -> {
+            println("초기마나를 입력해주세요")
+            while(true) {
+                try {
+                    var originMp:String? = readLine()
+                    return originMp?.toInt() ?: -1
+                } catch(e:Exception) {
+                    println("초기마나를 다시 입력해주세요")
+                }
+            }
+        }
+        "selectWorld" -> {
+            println("월드를 선택해주세요")
+            while(true) {
+                try {
+                    var selectWorld:String? = readLine()
+                    return selectWorld?.toInt() ?: -1
+                } catch(e:Exception) {
+                    println("월드를 다시 선택해주세요")
+                }
+            }
+        }
+        "selectNumber" -> {
+            println("번호를 선택해주세요")
+            while(true) {
+                try {
+                    var selectNumber:String? = readLine()
+                    return selectNumber?.toInt() ?: -1
+                } catch(e:Exception) {
+                    println("번호를 다시 선택해주세요")
+                }
+            }
+        }
+        else -> {
+            return "no"
+        }
+    }
+}
+
+fun openCashShopByArcher(character:Archer) {
+    var cashShop = CashShop.getInstance()
+
+    println("구매전 무기: ${character.weapons}")
+    cashShop.purchaseBowByArcher(character)
+
+    println("구매전 무기: ${character.weapons}")
+}
+
+fun openCashShopByWizard(character:Wizard) {
+    var cashShop = CashShop.getInstance()
+
+    println("구매전 무기: ${character.weapons}")
+    cashShop.purchaseStaffByWizard(character)
+    println("구매전 무기: ${character.weapons}")
 }
