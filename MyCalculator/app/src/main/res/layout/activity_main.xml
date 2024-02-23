@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/titleTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="계산기"
+        android:textColor="@color/purple_200"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.16" />
+
+    <TextView
+        android:id="@+id/etTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:layout_marginStart="10dp"
+        android:text="입력: "
+        android:textSize="20sp"
+        app:layout_constraintEnd_toStartOf="@+id/inputEt"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titleTv" />
+
+    <EditText
+        android:id="@+id/inputEt"
+        android:layout_width="150dp"
+        android:layout_height="40dp"
+        android:ems="10"
+        android:gravity="center"
+        android:inputType="number"
+        app:layout_constraintBottom_toBottomOf="@+id/etTv"
+        app:layout_constraintStart_toEndOf="@+id/etTv"
+        app:layout_constraintTop_toTopOf="@+id/etTv" />
+
+    <TextView
+        android:id="@+id/resultTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="결과: "
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/inputEt"
+        app:layout_constraintStart_toEndOf="@+id/inputEt"
+        app:layout_constraintTop_toTopOf="@+id/inputEt" />
+
+    <TextView
+        android:id="@+id/resultNumTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0.0"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/resultTv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/resultTv"
+        app:layout_constraintTop_toTopOf="@+id/resultTv" />
+
+    <Button
+        android:id="@+id/additionBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="30dp"
+        android:text="+"
+        app:layout_constraintBottom_toBottomOf="@+id/subtractionBtn"
+        app:layout_constraintEnd_toStartOf="@+id/subtractionBtn"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etTv" />
+
+    <Button
+        android:id="@+id/subtractionBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="-"
+        app:layout_constraintEnd_toStartOf="@+id/multiplicationBtn"
+        app:layout_constraintStart_toEndOf="@+id/additionBtn"
+        app:layout_constraintTop_toTopOf="@+id/additionBtn" />
+
+    <Button
+        android:id="@+id/multiplicationBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="*"
+        app:layout_constraintEnd_toStartOf="@+id/divisionBtn"
+        app:layout_constraintStart_toEndOf="@+id/subtractionBtn"
+        app:layout_constraintTop_toTopOf="@+id/subtractionBtn" />
+
+    <Button
+        android:id="@+id/divisionBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:text="/"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/multiplicationBtn"
+        app:layout_constraintTop_toTopOf="@+id/multiplicationBtn" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
