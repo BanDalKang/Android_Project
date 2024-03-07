@@ -13,14 +13,10 @@ class MainActivity : AppCompatActivity() {
     private var multiplicationButton: Button? = null
     private var divisionButton: Button? = null
     private var resultTextView: TextView? = null
-    private var calculator: Calculator? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        // Calculator 클래스 인스턴스 생성
-        calculator = Calculator()
 
         // 뷰 찾기
         inputEditText = findViewById(R.id.inputEt)
@@ -42,20 +38,23 @@ class MainActivity : AppCompatActivity() {
     private fun performCalculation(operator: Char) {
         val num1 = resultTextView?.text.toString().toDoubleOrNull() ?: return
         val num2 = inputEditText?.text.toString().toDoubleOrNull() ?: return
+
         val result = when (operator) {
-            '+' -> calculator?.add(num1, num2)
-            '-' -> calculator?.subtract(num1, num2)
-            '*' -> calculator?.multiply(num1, num2)
+            '+' -> Calculator.calculate(num1, num2, AddOperation())
+            '-' -> Calculator.calculate(num1, num2, SubtractOperation())
+            '*' -> Calculator.calculate(num1, num2, MultiplyOperation())
             '/' -> {
                 if (num2 == 0.0) {
-                    resultTextView?.text = "Error! Cannot divide by zero."
+                    resultTextView?.text = "오류! 0으로 나눌 수 없습니다."
                     return
                 }
-                calculator?.divide(num1, num2)
+                Calculator.calculate(num1, num2, DivideOperation())
             }
-            else -> return
+            else -> {
+                resultTextView?.text = "잘못된 연산자입니다."
+                return
+            }
         }
-        // 결과 TextView에 결과 표시
         resultTextView?.text = result.toString()
     }
 }

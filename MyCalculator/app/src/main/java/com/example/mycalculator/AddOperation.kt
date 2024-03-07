@@ -1,7 +1,7 @@
 package com.example.mycalculator
 
-class AddOperation {
-    fun operate(num1: Double, num2: Double): Double {
+class AddOperation : AbstractOperation() {
+    override fun operate(num1: Double, num2: Double): Double {
         return num1 + num2
     }
 }
