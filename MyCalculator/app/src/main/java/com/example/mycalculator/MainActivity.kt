@@ -42,16 +42,17 @@ class MainActivity : AppCompatActivity() {
         val num1 = resultTextView?.text.toString().toDoubleOrNull() ?: return
         val num2 = inputEditText?.text.toString().toDoubleOrNull() ?: return
 
+        // named parameter을 사용하면, 가독성이 좋다.
         val result = when (operator) {
-            '+' -> calculator.calculate(AddOperation(num1, num2))
-            '-' -> calculator.calculate(SubtractOperation(num1, num2))
-            '*' -> calculator.calculate(MultiplyOperation(num1, num2))
+            '+' -> calculator.calculate(AddOperation(num1=num1, num2=num2))
+            '-' -> calculator.calculate(SubtractOperation(num1=num1, num2=num2))
+            '*' -> calculator.calculate(MultiplyOperation(num1=num1, num2=num2))
             '/' -> {
                 if (num2 == 0.0) {
                     resultTextView?.text = "오류! 0으로 나눌 수 없습니다."
                     return
                 }
-                calculator.calculate(DivideOperation(num1, num2))
+                calculator.calculate(DivideOperation(num1=num1, num2=num2))
             }
             else -> {
                 resultTextView?.text = "잘못된 연산자입니다."
