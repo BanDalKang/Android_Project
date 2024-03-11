@@ -7,6 +7,9 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
+    // Lazy 방식(처음 calculator 변수를 이용하게 될 경우 Calculator 인스턴스가 생성
+    private val calculator by lazy { Calculator() }
+
     private var inputEditText: EditText? = null
     private var additionButton: Button? = null
     private var subtractionButton: Button? = null
@@ -40,15 +43,15 @@ class MainActivity : AppCompatActivity() {
         val num2 = inputEditText?.text.toString().toDoubleOrNull() ?: return
 
         val result = when (operator) {
-            '+' -> Calculator.calculate(num1, num2, AddOperation())
-            '-' -> Calculator.calculate(num1, num2, SubtractOperation())
-            '*' -> Calculator.calculate(num1, num2, MultiplyOperation())
+            '+' -> calculator.calculate(AddOperation(num1, num2))
+            '-' -> calculator.calculate(SubtractOperation(num1, num2))
+            '*' -> calculator.calculate(MultiplyOperation(num1, num2))
             '/' -> {
                 if (num2 == 0.0) {
                     resultTextView?.text = "오류! 0으로 나눌 수 없습니다."
                     return
                 }
-                Calculator.calculate(num1, num2, DivideOperation())
+                calculator.calculate(DivideOperation(num1, num2))
             }
             else -> {
                 resultTextView?.text = "잘못된 연산자입니다."
