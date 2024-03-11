@@ -53,19 +53,22 @@ fun testMain() {
         // 버퍼에 남아있는 해당 줄의 데이터를 소비(없앰)
         scanner.nextLine()
 
+        val calculator by lazy { Calculator() }
         val result = when (operator) {
-            "+" -> Calculator.calculate(num1, num2, AddOperation())
-            "-" -> Calculator.calculate(num1, num2, SubtractOperation())
-            "*" -> Calculator.calculate(num1, num2, MultiplyOperation())
+            "+" -> calculator.calculate(AddOperation(num1, num2))
+            "-" -> calculator.calculate(SubtractOperation(num1, num2))
+            "*" -> calculator.calculate(MultiplyOperation(num1, num2))
             "/" -> {
                 if (num2 == 0.0) {
                     println("오류! 0으로 나눌 수 없습니다.")
+                    println()
                     continue
                 }
-                Calculator.calculate(num1, num2, DivideOperation())
+                calculator.calculate(DivideOperation(num1, num2))
             }
             else -> {
                 println("잘못된 연산자입니다.")
+                println()
                 continue
             }
         }
