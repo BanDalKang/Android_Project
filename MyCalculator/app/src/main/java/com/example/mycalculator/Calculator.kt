@@ -1,7 +1,7 @@
 package com.example.mycalculator
 
-object Calculator {
-    fun calculate(num1: Double, num2: Double, operation: AbstractOperation): Double {
-        return operation.operate(num1, num2)
+class Calculator {
+    fun calculate(operation: AbstractOperation): Double {
+        return operation.operate(operation.num1, operation.num2)
     }
 }
