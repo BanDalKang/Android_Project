@@ -1,19 +1,21 @@
 package com.example.mykiosk
 
-import java.util.Scanner
+import java.util.*
 
 fun main() {
     testMain()
 }
 
-fun testMain() {
-    val scanner = Scanner(System.`in`)
+@Volatile var orderQueue = 0 // 현재 주문 대기수
+val bankMaintenanceStartTime = "오후 11시 10분" //은행점검 시작시간
+val bankMaintenanceEndTime = "오후 11시 20분" // 은행점검 종료시간
 
+fun testMain() {
     // 손님의 보유 금액 입력 받기
     var balance = inputCustomerInfo("money").toString().toDouble()
     var curCustomer = Customer(balance)
 
-    println("현재 보유 금액: W $balance")
+    println("[현재 보유 금액]: W $balance")
 
     while (true) {
         println()
@@ -32,7 +34,7 @@ fun testMain() {
                 val menu = BurgerMenu()
                 menu.init()
                 menu.displayMenu()
-                // 버거 숫자 선택 /////////
+                // 버거 숫자 선택
                 val burgerIdx = selectMenu(menu.burgersMenu.size)
                 if (burgerIdx == 0){
                     continue
@@ -46,7 +48,14 @@ fun testMain() {
                 val menu = FrozenCustardMenu()
                 menu.init()
                 menu.displayMenu()
-                print("FrozenCustard 메뉴 선택: ")
+                // 버거 숫자 선택
+                val frozenCustardIdx = selectMenu(menu.frozenCustardMenu.size)
+                if (frozenCustardIdx == 0){
+                    continue
+                } else {
+                    val selectedFrozenCustard = menu.frozenCustardMenu[frozenCustardIdx!!-1]
+                    toPay(curCustomer, selectedFrozenCustard)
+                }
 
             }
             "0" -> {
@@ -58,7 +67,6 @@ fun testMain() {
             }
         }
     }
-    scanner.close()
 }
 
 // 현재 손님의 정보 등 입력 받는 함수
@@ -103,10 +111,7 @@ fun selectMenu(listSize:Int): Int? {
             // 인덱스 입력 받아서 버거 리스트 요소에 접근
             val burgerIdx = inputCustomerInfo("selectNumber").toString().toInt()
 
-            if(burgerIdx==0){
-                return 0  // 선택이 취소된 경우 null 반환
-            }
-            if (burgerIdx in 1..listSize) {
+            if (burgerIdx in 0..listSize) {
                 return burgerIdx
             } else {
                 println("유효한 번호를 선택해주세요.")
@@ -122,4 +127,43 @@ fun toPay(customer:Customer, orderedMenu:SHAKESHACK){
     var pay = Pay.getInstance()
     pay.payOrder(customer, orderedMenu)
     println("주문한 메뉴: ${customer.orders}")
+}
+
+// 현재 주문 대기수 보여주는 함수
+fun displayOrderQueue() {
+    while (true) {
+        println("아래와 같이 주문 하시겠습니까? (현재 주문 대기수: $orderQueue)\n")
+        Thread.sleep(5000) // 5초 대기
+    }
+}
+
+// 주문시 은행점검시간인지 체크하는 함수
+fun checkOrder() {
+    if(isMaintenanceTime(bankMaintenanceStartTime, bankMaintenanceEndTime)) {
+        displayOrderQueue()
+        println("1. 주문      2. 메뉴판\n")
+        val orderNumber = inputCustomerInfo("selectNumber").toString().toInt()
+        when (orderNumber) {
+            1 -> {
+            }
+            2 -> {
+                // 메뉴판을 보여주는 코드 추가
+            }
+            else -> println("올바른 선택지를 입력하세요.")
+        }
+    }
+}
+
+fun isMaintenanceTime(startTime: String, endTime: String): Boolean {
+    val formatter = java.text.SimpleDateFormat("a hh:mm", Locale.getDefault())
+    val now = Calendar.getInstance()
+    val currentTime = formatter.parse(now.toString())
+    val startTime= formatter.parse(startTime)
+    val endTime = formatter.parse(endTime)
+
+    if(currentTime in startTime..endTime){
+        println("현재 시각은 $currentTime 입니다.")
+        println("은행 점검 시간은 $bankMaintenanceStartTime ~ $bankMaintenanceEndTime 이므로 결제할 수 없습니다.")
+    }
+    return currentTime in startTime..endTime
 }

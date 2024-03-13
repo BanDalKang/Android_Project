@@ -16,7 +16,7 @@ class FrozenCustard(private val frozenCustardName: String, private val frozenCus
 }
 
 class FrozenCustardMenu {
-    private val frozenCustardMenu = mutableListOf<FrozenCustard>()
+    val frozenCustardMenu = mutableListOf<FrozenCustard>()
     
     fun init() {
         frozenCustardMenu.add(FrozenCustard("Shack-made Vanilla", 3.9, "오리지널 바닐라 플레이버의 아이스크림"))
