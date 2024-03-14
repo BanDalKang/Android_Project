@@ -18,14 +18,18 @@ class Pay private constructor() {
         }
     }
 
-    fun payOrder(customer:Customer, orderedMenu:SHAKESHACK){
-        if(customer.balance >= orderedMenu.price) {
-            // customer.balance - orderedMenu.price 부동 소수점 문제 발생해서 수정
-            println("[구매 후 잔액]: [${customer.balance} - ${orderedMenu.price}] = W ${(customer.balance - orderedMenu.price).toBigDecimal().setScale(2, RoundingMode.HALF_UP).toDouble()}")
-            customer.balance = (customer.balance - orderedMenu.price).toBigDecimal().setScale(2, RoundingMode.HALF_UP).toDouble()
-            customer.orders.add(orderedMenu.name)
+    fun payOrder(customer: Customer, amount: Double): Boolean {
+        val paymentSuccess: Boolean
+        if (customer.balance >= amount) {
+            val remainingMoney = (customer.balance - amount).toBigDecimal().setScale(2, RoundingMode.HALF_UP).toDouble()
+            println("[구매 후 잔액]: [${customer.balance} - ${amount}] = W $remainingMoney")
+            customer.balance = remainingMoney
+            paymentSuccess = true
         } else {
-            println("돈이 부족합니다...\n[현재 보유 금액]: W ${customer.balance}")
+            val lackingMoney = (amount - customer.balance.toBigDecimal().setScale(2, RoundingMode.HALF_UP).toDouble())
+            println("[현재 보유 금액]: W ${customer.balance}\nW $lackingMoney 만큼 부족해서 주문할 수 없습니다.\n")
+            paymentSuccess = false
         }
+        return paymentSuccess
     }
 }
