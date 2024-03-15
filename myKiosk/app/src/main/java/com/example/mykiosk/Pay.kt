@@ -21,12 +21,12 @@ class Pay private constructor() {
     fun payOrder(customer: Customer, amount: Double): Boolean {
         val paymentSuccess: Boolean
         if (customer.balance >= amount) {
-            val remainingMoney = (customer.balance - amount).toBigDecimal().setScale(2, RoundingMode.HALF_UP).toDouble()
+            val remainingMoney = (customer.balance - amount).toBigDecimal().setScale(2, RoundingMode.HALF_UP)
             println("[구매 후 잔액]: [${customer.balance} - ${amount}] = W $remainingMoney")
-            customer.balance = remainingMoney
+            customer.balance = remainingMoney.toDouble()
             paymentSuccess = true
         } else {
-            val lackingMoney = (amount - customer.balance.toBigDecimal().setScale(2, RoundingMode.HALF_UP).toDouble())
+            val lackingMoney = (amount - customer.balance).toBigDecimal().setScale(2, RoundingMode.HALF_UP)
             println("[현재 보유 금액]: W ${customer.balance}\nW $lackingMoney 만큼 부족해서 주문할 수 없습니다.\n")
             paymentSuccess = false
         }

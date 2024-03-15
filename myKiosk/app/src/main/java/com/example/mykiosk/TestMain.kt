@@ -15,8 +15,8 @@ fun main() {
 
 var isBasketEmpty: Boolean = true // 장바구니가 비어있는 지 확인하는 플래그
 @Volatile var orderQueue: Int = 0 // 현재 주문 대기수
-val bankMaintenanceStartTime = LocalTime.of(22, 15) //은행점검 시작시간
-val bankMaintenanceEndTime = LocalTime.of(23, 0) // 은행점검 종료시간
+val bankMaintenanceStartTime = LocalTime.of(15, 45) //은행점검 시작시간
+val bankMaintenanceEndTime = LocalTime.of(16, 0) // 은행점검 종료시간
 
 fun testMain() {
     // 손님의 보유 금액 입력 받기
@@ -33,7 +33,7 @@ fun testMain() {
         println("2. Frozen Custard  | 매장에서 신선하게 만드는 아이스크림")
         println("3. Drinks          | 매장에서 직접 만드는 음료")
         println("4. Beer            | 뉴욕 브루클린 브루어리에서 양조한 맥주")
-        println("0. 종료             | 프로그램 종료\n")
+        println("0. 종료             | 프로그램 종료")
 
         if(!isBasketEmpty){
             println("[ ORDER MENU ]")
@@ -47,7 +47,6 @@ fun testMain() {
                 val menu = BurgerMenu()
                 menu.init()
                 menu.displayMenu()
-                // 버거 숫자 선택
                 val burgerIdx = selectMenu(menu.burgersMenu.size)
                 if (burgerIdx == 0){
                     continue
@@ -61,7 +60,6 @@ fun testMain() {
                 val menu = FrozenCustardMenu()
                 menu.init()
                 menu.displayMenu()
-                // 버거 숫자 선택
                 val frozenCustardIdx = selectMenu(menu.frozenCustardMenu.size)
                 if (frozenCustardIdx == 0){
                     continue
@@ -144,7 +142,7 @@ fun selectMenu(listSize:Int): Int? {
     while (true) {
         try {
             print("메뉴 선택: ")
-            // 인덱스 입력 받아서 버거 리스트 요소에 접근
+            // 인덱스 입력 받아서 메뉴 리스트 요소에 접근
             val burgerIdx = inputCustomerInfo("selectNumber").toString().toInt()
 
             if (burgerIdx in 0..listSize) {
@@ -160,7 +158,6 @@ fun selectMenu(listSize:Int): Int? {
 
 // 장바구니에 추가하는 함수
 fun addBasket(customer: Customer,selectedMenu: Menu) {
-    // 해당 리스트의 인덱스 에외처리해서 입력 받기
     while (true) {
         try {
             println("${selectedMenu.name} | W ${"%.1f".format(selectedMenu.price)} | ${selectedMenu.description}")
@@ -187,7 +184,6 @@ fun addBasket(customer: Customer,selectedMenu: Menu) {
     }
 }
 
-
 // 현재 손님의 주문 메뉴 결제하는 함수
 fun toPay(customer:Customer, amount: Double){
     var pay = Pay.getInstance()
@@ -206,8 +202,9 @@ fun toPay(customer:Customer, amount: Double){
 fun displayOrderQueue() {
     thread(start = true) {
         while (isMaintenanceTime()) { // 은행 점검시간이 끝날 때까지
-            println("(현재 주문 대기수: $orderQueue)\n")
+            Thread.sleep(1000) // 3초 동안 메인 스레드를 멈춤
             runBlocking {
+                println("(현재 주문 대기수: $orderQueue)\n")
                 launch {
                     delay(5000)
                 }
@@ -218,8 +215,7 @@ fun displayOrderQueue() {
 
 // 주문 전 장바구니 확인하는 함수
 fun checkOrder(customer:Customer) {
-    println("\n아래와 같이 주문 하시겠습니까?")
-    displayOrderQueue()
+    println("\n아래와 같이 주문 하시겠습니까?   (현재 주문 대기수: $orderQueue)")
     displayOrderMenu(customer.orders)
     val totalAmount = calculateTotal(customer.orders)
     println("\n[ Total ]")
@@ -251,10 +247,10 @@ fun checkOrder(customer:Customer) {
 // 은행 점검 기산인지 확인하는 함수
 fun isMaintenanceTime():Boolean  {
     val currentTime = LocalTime.now()
-
     return currentTime in bankMaintenanceStartTime..bankMaintenanceEndTime
 }
 
+// 현재 시간 가져오는 함수
 fun getCurrentTime(): String {
     val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
     val currentTime = Date()
