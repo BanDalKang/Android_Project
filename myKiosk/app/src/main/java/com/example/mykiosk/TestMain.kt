@@ -157,7 +157,7 @@ fun selectMenu(listSize:Int): Int? {
 }
 
 // 장바구니에 추가하는 함수
-fun addBasket(customer: Customer,selectedMenu: Menu) {
+fun addBasket(customer: Customer,selectedMenu: myMenu) {
     while (true) {
         try {
             println("${selectedMenu.name} | W ${"%.1f".format(selectedMenu.price)} | ${selectedMenu.description}")
@@ -238,7 +238,6 @@ fun checkOrder(customer:Customer) {
             }
         }
         2 -> {
-
         }
         else -> println("유효한 번호를 선택해주세요.")
     }

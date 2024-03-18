@@ -1,6 +1,6 @@
 package com.example.mykiosk
 
-class Menu(private val itemName: String, private val itemPrice: Double, private val itemDescription: String) : SHAKESHACK() {
+class myMenu(private val itemName: String, private val itemPrice: Double, private val itemDescription: String) : SHAKESHACK() {
     override val name: String
         get() = itemName
 
