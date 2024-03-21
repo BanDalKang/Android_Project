@@ -94,5 +94,4 @@
         app:layout_constraintStart_toStartOf="@+id/name_TV"
         app:layout_constraintTop_toBottomOf="@id/pwd_ET" />
 
-
 </androidx.constraintlayout.widget.ConstraintLayout>
