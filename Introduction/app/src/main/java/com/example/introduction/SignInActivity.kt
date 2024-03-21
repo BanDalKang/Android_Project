@@ -17,7 +17,7 @@ class SignInActivity : AppCompatActivity() {
         val signInButton: Button = findViewById(R.id.signin_btn)
         val signUpButton: Button = findViewById(R.id.signup_btn)
 
-        // 로그인
+        // 로그인 버튼
         signInButton.setOnClickListener {
             val id = idEditText.text.toString()
             val pwd = pwdEditText.text.toString()
@@ -32,7 +32,7 @@ class SignInActivity : AppCompatActivity() {
             }
         }
 
-        // 회원가입
+        // 회원가입 버튼
         signUpButton.setOnClickListener {
             val intent = Intent(this@SignInActivity, SignUpActivity::class.java)
             startActivity(intent)
