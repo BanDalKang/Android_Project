@@ -89,7 +89,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="회원가입"
+        android:text="완료"
         app:layout_constraintEnd_toEndOf="@+id/name_TV"
         app:layout_constraintStart_toStartOf="@+id/name_TV"
         app:layout_constraintTop_toBottomOf="@id/pwd_ET" />
