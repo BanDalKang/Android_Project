@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:padding="@dimen/layout_item_padding">
+
+        <ImageView
+            android:id="@+id/iv_item"
+            android:layout_width="@dimen/item_image_size"
+            android:layout_height="@dimen/item_image_size"
+            android:layout_marginRight="@dimen/item_image_margin"
+            android:background="@drawable/shape_item_image_radius10"
+            android:clipToOutline="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_sample1" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/item_margin"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:hint="Title"
+                style="@style/item.Head.S" />
+
+            <TextView
+                android:id="@+id/tv_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/item_margin"
+                android:hint="Address"
+                style="@style/item.Body.S" />
+
+            <TextView
+                android:id="@+id/tv_price"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/item_margin"
+                android:hint="Price"
+                style="@style/item.Head.S.Bold" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+
+                <ImageView
+                    android:id="@+id/iv_chat"
+                    android:layout_width="@dimen/icon_size"
+                    android:layout_height="@dimen/icon_size"
+                    android:layout_marginEnd="@dimen/icon_margin"
+                    android:background="@drawable/ic_chat"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_like"
+                    app:layout_constraintEnd_toStartOf="@+id/tv_chat"
+                    app:layout_constraintTop_toTopOf="@+id/tv_like" />
+
+                <TextView
+                    android:id="@+id/tv_chat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/icon_text_padding"
+                    android:layout_marginEnd="@dimen/icon_margin_between"
+                    android:hint="6"
+                    style="@style/item.Body.S"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_like"
+                    app:layout_constraintEnd_toStartOf="@+id/iv_like"
+                    app:layout_constraintTop_toTopOf="@+id/tv_like" />
+
+                <ImageView
+                    android:id="@+id/iv_like"
+                    android:layout_width="@dimen/icon_size"
+                    android:layout_height="@dimen/icon_size"
+                    android:layout_marginEnd="@dimen/icon_margin"
+                    android:background="@drawable/ic_like_empty"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_like"
+                    app:layout_constraintEnd_toStartOf="@+id/tv_like"
+                    app:layout_constraintTop_toTopOf="@+id/tv_like" />
+
+                <TextView
+                    android:id="@+id/tv_like"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/icon_text_padding"
+                    android:layout_marginBottom="@dimen/icon_margin"
+                    android:hint="2"
+                    style="@style/item.Body.S"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>
