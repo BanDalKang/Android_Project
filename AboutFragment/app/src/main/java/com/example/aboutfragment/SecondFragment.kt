@@ -16,11 +16,12 @@ interface FragmentDataListener {
 
 class SecondFragment : Fragment() {
 
-    // [3] SecondFragment -> Activity
     private var param1: String? = null
-    private var listener: FragmentDataListener? = null
     private var _binding: FragmentSecondBinding? = null
     private val binding get() = _binding!!
+    // [3] SecondFragment -> Activity
+    private var listener: FragmentDataListener? = null
+
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
