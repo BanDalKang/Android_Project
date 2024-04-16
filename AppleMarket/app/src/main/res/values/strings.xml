@@ -3,5 +3,14 @@
     <string name="next">Next</string>
     <string name="previous">Previous</string>
     <string name="address">내 동네 설정</string>
+    <string name="btn_chat">채팅하기</string>
+    <string name="manner_temperature">매너온도</string>
+
+    <string name="add_wishlist">관심 목록에 추가되었어요.</string>
+
+    <string name="dialog_title">종료</string>
+    <string name="dialog_message">정말 종료하시겠습니까?</string>
+    <string name="dialog_button_positive">확인</string>
+    <string name="dialog_button_negative">취소</string>
 
 </resources>

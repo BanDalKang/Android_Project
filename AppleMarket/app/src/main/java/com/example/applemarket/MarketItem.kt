@@ -13,5 +13,5 @@ data class MarketItem(
     val userAddress: String,
     val itemChatCount: Int,
     var itemLikeCount: Int,
-    var isLiked: Boolean
+    var isLiked: Boolean,
 ) : Parcelable

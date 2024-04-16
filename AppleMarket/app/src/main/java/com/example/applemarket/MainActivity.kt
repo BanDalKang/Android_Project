@@ -1,21 +1,50 @@
 package com.example.applemarket
 
+import android.content.ContentValues
+import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.View
-import android.widget.Toast
+import android.view.ViewGroup
+import android.view.Window
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Button
+import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.applemarket.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    private lateinit var locationList: Array<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        initView()
+    }
+
+    private fun initView() {
+        setRecyclerView()
+        setSpinner()
+        binding.ivNotification.setOnClickListener {
+            //showNotification()
+        }
+    }
+
+    private fun setRecyclerView() {
+        locationList = arrayOf(
+            "내배캠동", "스파르타동", "내 동네 설정"
+        )
 
         val dataList = mutableListOf<MarketItem>()
         dataList.add(MarketItem(R.drawable.ic_sample1, "산지 한달된 선풍기 팝니다", "이사가서 필요가 없어졌어요 급하게 내놓습니다", "1,000원", "대현동", "서울 서대문구 창천동", 13, 25, false))
@@ -34,11 +63,86 @@ class MainActivity : AppCompatActivity() {
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
 
+        // 아이템들 사이에 회색 라인을 추가
+        binding.recyclerView.addItemDecoration(
+            DividerItemDecoration(this, LinearLayoutManager.VERTICAL)
+        )
+
+        // Parcelize를 사용해서 클릭된 데이터 상세페이지로 전달
         adapter.itemClick = object : MarketAdapter.ItemClick {
             override fun onClick(view: View, position: Int) {
-                val name: String = dataList[position].itemTitle
-                Toast.makeText(this@MainActivity,"$name", Toast.LENGTH_SHORT).show()
+                val clickedItem = dataList[position]
+                val intent = Intent(this@MainActivity, DetailActivity::class.java)
+                intent.putExtra("likePosition", position)
+                intent.putExtra("clickedItem", clickedItem)
+                Log.d(ContentValues.TAG, "clickedItem: $clickedItem")
+                startActivity(intent)
             }
         }
+    }
+
+    private fun setSpinner() {
+        binding.spinnerLocation.apply {
+            // 어댑터 설정
+            val arrayAdapter = ArrayAdapter(
+                this@MainActivity,
+                android.R.layout.simple_spinner_item,
+                locationList
+            )
+            arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            adapter = arrayAdapter
+
+            setSelection(0)
+
+            onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                    // 선택되었을 때
+                }
+                override fun onNothingSelected(parent: AdapterView<*>) {
+                    // 아무것도 선택되지 않았을 때
+                }
+            }
+        }
+    }
+
+    private fun showAlertDialog() {
+        val dialogView = layoutInflater.inflate(R.layout.dialog, null)
+        val tvCenter = dialogView.findViewById<TextView>(R.id.tv_dialog_title)
+        val tvNum = dialogView.findViewById<TextView>(R.id.tv__dialog_message)
+        val noBtn = dialogView.findViewById<Button>(R.id.btn_negative)
+        val yesBtn = dialogView.findViewById<Button>(R.id.btn_positive)
+
+        val dialogBuilder = AlertDialog.Builder(this)
+        dialogBuilder.setView(dialogView)
+
+        val dialog = dialogBuilder.create()
+        //아래 두줄 꼭 적어야 drawable 적용 가능
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.window?.requestFeature(Window.FEATURE_NO_TITLE)
+
+        tvCenter.text = getString(R.string.dialog_title)
+        tvNum.text = getString(R.string.dialog_message)
+        noBtn.setOnClickListener {
+            dialog.dismiss()
+        }
+        yesBtn.setOnClickListener {
+            dialog.dismiss()
+            finish()
+        }
+
+        dialog.show()
+
+        // 화면 넓이의 70%로 다이얼로그 크기 설정
+        val window = dialog.window
+        val size = android.graphics.Point()
+        val display = window?.windowManager?.defaultDisplay
+        display?.getSize(size)
+        val width = (size.x * 0.7).toInt()
+        window?.setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT)
+    }
+
+    // 뒤로가기(BACK)버튼 클릭시 종료 다이얼로그
+    override fun onBackPressed() {
+        showAlertDialog()
     }
 }
