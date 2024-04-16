@@ -35,7 +35,7 @@
                 android:ellipsize="end"
                 android:maxLines="2"
                 android:hint="Title"
-                style="@style/item.Head.S" />
+                style="@style/item.Body.L" />
 
             <TextView
                 android:id="@+id/tv_address"
@@ -51,7 +51,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/item_margin"
                 android:hint="Price"
-                style="@style/item.Head.S.Bold" />
+                style="@style/item.Body.L.Bold" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"

@@ -1,6 +1,216 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".DetailActivity">
+
+    <ScrollView
+        android:id="@+id/layout_scroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/layout_price_height"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/layout_price" >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/iv_detail_item"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/detail_image_size"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_sample1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/iv_profile"
+                android:layout_width="@dimen/profile_image_size"
+                android:layout_height="@dimen/profile_image_size"
+                android:layout_margin="@dimen/detail_margin"
+                android:src="@drawable/ic_profile"
+                android:background="@drawable/shape_profile_image_oval"
+                app:civ_border_color="@color/white"
+                app:civ_border_overlay="true"
+                app:civ_border_width="0dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/iv_detail_item" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginStart="@dimen/detail_margin"
+                app:layout_constraintBottom_toBottomOf="@+id/iv_profile"
+                app:layout_constraintStart_toEndOf="@+id/iv_profile"
+                app:layout_constraintTop_toTopOf="@+id/iv_profile">
+
+                <TextView
+                    android:id="@+id/tv_user_name"
+                    style="@style/item.Body.L.Bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/icon_margin_between"
+                    android:hint="user_name" />
+
+                <TextView
+                    android:id="@+id/tv_user_address"
+                    style="@style/item.Body.S"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="user_address" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_manner_temperature"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/icon_margin_between"
+                android:text="39.3 ℃"
+                android:textColor="@color/main"
+                style="@style/item.Body.L.Bold"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_manner_emoji"
+                app:layout_constraintEnd_toStartOf="@+id/tv_manner_emoji"
+                app:layout_constraintTop_toTopOf="@+id/tv_manner_emoji" />
+
+            <TextView
+                android:id="@+id/tv_manner_emoji"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/detail_margin"
+                android:layout_marginBottom="@dimen/icon_margin_between"
+                android:text="😉"
+                android:textSize="@dimen/icon_image_size"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/iv_profile" />
+
+            <TextView
+                style="@style/item.Body.S"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/detail_margin"
+                android:text="@string/manner_temperature"
+                app:layout_constraintBottom_toBottomOf="@+id/iv_profile"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_manner_emoji" />
+
+            <View
+                android:id="@+id/line_horizontal1"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/line"
+                android:layout_margin="@dimen/detail_margin"
+                android:background="@color/lightest_grey"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/iv_profile" />
+
+            <ImageButton
+                android:id="@+id/btn_back"
+                android:layout_width="@dimen/icon_image_size"
+                android:layout_height="@dimen/icon_image_size"
+                android:layout_margin="@dimen/detail_margin"
+                android:contentDescription="뒤로가기"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:backgroundTint="@color/white"
+                android:background="@drawable/ic_back" />
+
+            <LinearLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="@dimen/detail_margin"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/line_horizontal1">
+
+                <TextView
+                    android:id="@+id/tv_detail_title"
+                    style="@style/item.Head.M.Bold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="detail_title" />
+
+                <TextView
+                    android:id="@+id/tv_detail_content"
+                    style="@style/item.Head.S"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:hint="detail_content" />
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+    <View
+        android:id="@+id/line_horizontal2"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line"
+        android:background="@color/light_grey"
+        app:layout_constraintTop_toBottomOf="@id/layout_scroll"
+        app:layout_constraintBottom_toTopOf="@id/layout_price"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_price"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/layout_price_height"
+        android:padding="@dimen/detail_margin"
+        android:background="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <ImageView
+            android:id="@+id/iv_like_btn"
+            android:layout_width="@dimen/icon_image_size"
+            android:layout_height="@dimen/icon_image_size"
+            android:background="@drawable/ic_like_empty"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/line_vertical"
+            android:layout_width="@dimen/line"
+            android:layout_height="40dp"
+            android:layout_marginStart="35dp"
+            android:background="@color/lightest_grey"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_detail_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/detail_margin"
+            android:hint="100,000원"
+            style="@style/item.Head.M.Bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/line_vertical"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_chat"
+            android:layout_width="100dp"
+            android:layout_height="35dp"
+            android:background="@drawable/shape_chat_button"
+            android:text="@string/btn_chat"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:stateListAnimator="@null"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

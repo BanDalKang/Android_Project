@@ -8,39 +8,40 @@
     tools:context=".MainActivity">
 
     <Spinner
-        android:id="@+id/spinner"
-        android:layout_width="150dp"
-        android:layout_height="50dp"
-        android:textSize="20sp"
-        android:spinnerMode="dialog"
+        android:id="@+id/spinner_location"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/spinner_height"
+        android:layout_marginStart="@dimen/default_margin"
+        android:spinnerMode="dropdown"
+        style="@style/item.Head.M.Bold"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
-        android:id="@+id/notiButton"
-        android:layout_width="22dp"
-        android:layout_height="22dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="15dp"
+        android:id="@+id/iv_notification"
+        android:layout_width="@dimen/icon_image_size"
+        android:layout_height="@dimen/icon_image_size"
+        android:layout_margin="@dimen/default_margin"
         android:background="@drawable/ic_notification"
+        app:layout_constraintBottom_toBottomOf="@+id/spinner_location"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/spinner_location" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="@dimen/spinner_height"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner" />
+        app:layout_constraintTop_toBottomOf="@+id/spinner_location" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="30dp"
-        android:layout_marginBottom="30dp"
+        android:layout_marginEnd="@dimen/floatingButton_margin"
+        android:layout_marginBottom="@dimen/floatingButton_margin"
         android:clickable="true"
         android:visibility="invisible"
         android:src="@drawable/ic_arrow_up"

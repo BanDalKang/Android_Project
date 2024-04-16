@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.AppleMarket" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Base.Theme.AppleMarket" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
@@ -8,12 +8,24 @@
     <style name="Theme.AppleMarket" parent="Base.Theme.AppleMarket" />
 
     <!-- text -->
+    <style name="item.Head.M.Bold" parent="TextAppearance.AppCompat">
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
     <style name="item.Head.S" parent="TextAppearance.AppCompat">
         <item name="android:includeFontPadding">false</item>
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">18sp</item>
         <item name="android:textColor">@color/semiBlack</item>
     </style>
-    <style name="item.Head.S.Bold" parent="TextAppearance.AppCompat">
+
+    <style name="item.Body.L" parent="TextAppearance.AppCompat">
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+    <style name="item.Body.L.Bold" parent="TextAppearance.AppCompat">
         <item name="android:includeFontPadding">false</item>
         <item name="android:textSize">16sp</item>
         <item name="android:textStyle">bold</item>
@@ -22,11 +34,21 @@
     <style name="item.Body.M" parent="TextAppearance.AppCompat">
         <item name="android:includeFontPadding">false</item>
         <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/semiBlack</item>
+    </style>
+    <style name="item.Body.M.Grey" parent="TextAppearance.AppCompat">
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/grey</item>
     </style>
     <style name="item.Body.S" parent="TextAppearance.AppCompat">
         <item name="android:includeFontPadding">false</item>
-        <item name="android:textSize">13sp</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/grey</item>
+    </style>
+    <style name="item.Action.S" parent="TextAppearance.AppCompat">
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:textSize">10sp</item>
         <item name="android:textColor">@color/grey</item>
     </style>
 
