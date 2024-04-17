@@ -1,6 +1,7 @@
 package com.example.applemarket
 
 import android.content.ContentValues
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -22,6 +23,7 @@ import com.example.applemarket.databinding.ActivityMainBinding
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    private lateinit var keywordNotification: KeywordNotification
     private lateinit var locationList: Array<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,16 +38,14 @@ class MainActivity : AppCompatActivity() {
     private fun initView() {
         setRecyclerView()
         setSpinner()
+
+        keywordNotification = KeywordNotification(this)
         binding.ivNotification.setOnClickListener {
-            //showNotification()
+            keywordNotification.sendNotification()
         }
     }
 
     private fun setRecyclerView() {
-        locationList = arrayOf(
-            "내배캠동", "스파르타동", "내 동네 설정"
-        )
-
         val dataList = mutableListOf<MarketItem>()
         dataList.add(MarketItem(R.drawable.ic_sample1, "산지 한달된 선풍기 팝니다", "이사가서 필요가 없어졌어요 급하게 내놓습니다", "1,000원", "대현동", "서울 서대문구 창천동", 13, 25, false))
         dataList.add(MarketItem(R.drawable.ic_sample2, "김치냉장고", "이사로인해 내놔요", "20,000원", "안마담", "인천 계양구 귤현동", 28, 8, false))
@@ -82,21 +82,23 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setSpinner() {
+        locationList = arrayOf(
+            "내배캠동", "스파르타동", "내 동네 설정"
+        )
+
         binding.spinnerLocation.apply {
-            // 어댑터 설정
-            val arrayAdapter = ArrayAdapter(
+            // 선택된 항목인 경우 텍스트를 볼드체로 설정하는 CustomArrayAdapter 사용
+            val arrayAdapter = CustomArrayAdapter(
                 this@MainActivity,
-                android.R.layout.simple_spinner_item,
                 locationList
             )
             arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             adapter = arrayAdapter
 
-            setSelection(0)
-
+            setSelection(2)
             onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
-                    // 선택되었을 때
+                    setSelection(position)
                 }
                 override fun onNothingSelected(parent: AdapterView<*>) {
                     // 아무것도 선택되지 않았을 때
@@ -107,10 +109,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun showAlertDialog() {
         val dialogView = layoutInflater.inflate(R.layout.dialog, null)
-        val tvCenter = dialogView.findViewById<TextView>(R.id.tv_dialog_title)
-        val tvNum = dialogView.findViewById<TextView>(R.id.tv__dialog_message)
-        val noBtn = dialogView.findViewById<Button>(R.id.btn_negative)
-        val yesBtn = dialogView.findViewById<Button>(R.id.btn_positive)
+        val tvDialogTitle = dialogView.findViewById<TextView>(R.id.tv_dialog_title)
+        val tvDialogMessage = dialogView.findViewById<TextView>(R.id.tv_dialog_message)
+        val btnNegative = dialogView.findViewById<Button>(R.id.btn_negative)
+        val btnPositive = dialogView.findViewById<Button>(R.id.btn_positive)
 
         val dialogBuilder = AlertDialog.Builder(this)
         dialogBuilder.setView(dialogView)
@@ -120,12 +122,12 @@ class MainActivity : AppCompatActivity() {
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog.window?.requestFeature(Window.FEATURE_NO_TITLE)
 
-        tvCenter.text = getString(R.string.dialog_title)
-        tvNum.text = getString(R.string.dialog_message)
-        noBtn.setOnClickListener {
+        tvDialogTitle.text = getString(R.string.dialog_title)
+        tvDialogMessage.text = getString(R.string.dialog_message)
+        btnNegative.setOnClickListener {
             dialog.dismiss()
         }
-        yesBtn.setOnClickListener {
+        btnPositive.setOnClickListener {
             dialog.dismiss()
             finish()
         }
