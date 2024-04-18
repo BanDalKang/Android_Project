@@ -71,7 +71,6 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/tv_manner_temperature"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/icon_margin_between"
@@ -94,6 +93,7 @@
                 app:layout_constraintTop_toTopOf="@+id/iv_profile" />
 
             <TextView
+                android:id="@+id/tv_manner_temperature"
                 style="@style/item.Body.S"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

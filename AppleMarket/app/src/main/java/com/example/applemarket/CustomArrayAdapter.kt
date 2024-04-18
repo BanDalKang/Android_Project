@@ -8,7 +8,7 @@ import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.TextView
 
-class CustomArrayAdapter(context: Context, private val items: Array<String>) :
+class CustomArrayAdapter(context: Context, items: Array<String>) :
     ArrayAdapter<String>(context, R.layout.custom_spinner, items) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {

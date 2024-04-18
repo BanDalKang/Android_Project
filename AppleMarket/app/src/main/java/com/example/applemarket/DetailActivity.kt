@@ -2,8 +2,13 @@ package com.example.applemarket
 
 import android.content.Intent
 import android.graphics.Paint
+import android.graphics.Typeface
 import android.os.Bundle
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.StyleSpan
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.example.applemarket.databinding.ActivityDetailBinding
 import com.google.android.material.snackbar.Snackbar
 
@@ -25,7 +30,7 @@ class DetailActivity : AppCompatActivity() {
         setData()
         setUnderLineText()
         binding.btnBack.setOnClickListener {
-            onBackPressed()
+            exit()
         }
         binding.ivLikeBtn.setOnClickListener {
             addWishList()
@@ -57,15 +62,46 @@ class DetailActivity : AppCompatActivity() {
     private fun addWishList() {
         if(!isLiked){
             binding.ivLikeBtn.setImageResource(R.drawable.ic_like_full)
-            Snackbar.make(binding.root, getString(R.string.add_wishlist), Snackbar.LENGTH_SHORT).show()
             isLiked = true
+            showSnackbar()
         }else {
             binding.ivLikeBtn.setImageResource(R.drawable.ic_like_empty)
             isLiked = false
         }
     }
 
+    private fun showSnackbar() {
+        /*
+        LENGTH_SHORT: 약 2초간
+        LENGTH_LONG: 약 4.5초간
+        LENGTH_INDEFINITE: 사용자가 스낵바를 닫을 때까지
+        */
+        val snackbar = Snackbar.make(binding.root, getString(R.string.add_wishlist), Snackbar.LENGTH_SHORT)
+        val actionText = getString(R.string.show_wishlist)
+        val actionBoldText = SpannableString(actionText)
+        actionBoldText.setSpan(StyleSpan(Typeface.BOLD), 0, actionText.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        snackbar.setActionTextColor(ContextCompat.getColor(this, R.color.main))
+
+        snackbar.setAction(actionBoldText) {
+            // 버튼을 클릭했을 때
+        }
+
+        // 표시될 위치 조정
+        snackbar.setAnchorView(binding.lineHorizontal2)
+        snackbar.show()
+    }
+
+    private fun exit() {
+        val likePosition = intent.getIntExtra("likePosition", 0)
+        val intent = Intent(this, MainActivity::class.java).apply {
+            putExtra("likePosition", likePosition)
+            putExtra("isLiked", isLiked)
+        }
+        setResult(RESULT_OK, intent)
+        if (!isFinishing) finish()
+    }
     override fun onBackPressed() {
         super.onBackPressed()
+        exit()
     }
 }

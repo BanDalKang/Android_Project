@@ -14,7 +14,7 @@
         style="@style/item.Head.S"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:hint="종료"
+        tools:hint="제목"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

@@ -8,12 +8,15 @@
 
     <string name="add_wishlist">관심 목록에 추가되었어요.</string>
 
-    <string name="dialog_title">종료</string>
-    <string name="dialog_message">정말 종료하시겠습니까?</string>
     <string name="dialog_button_positive">확인</string>
     <string name="dialog_button_negative">취소</string>
+    <string name="exit_title">종료</string>
+    <string name="exit_message">정말 종료하시겠습니까?</string>
+    <string name="delete_title">삭제</string>
+    <string name="delete_message">정말 삭제하시겠습니까?</string>
 
     <string name="notification_title">키워드 알림</string>
     <string name="notification_content">설정한 키워드에 대한 알림이 도착했습니다.</string>
+    <string name="show_wishlist">관심목록 보기</string>
 
 </resources>
