@@ -1,28 +1,31 @@
 package com.example.applemarket
 
+import android.app.Dialog
 import android.content.ContentValues
+import android.content.Context
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
+import android.graphics.Point
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
-import android.view.Window
+import android.view.WindowManager
+import android.view.animation.AlphaAnimation
 import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.applemarket.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    private lateinit var keywordNotification: KeywordNotification
     private lateinit var locationList: Array<String>
+    private lateinit var exitDialog: CustomDialog
+    private lateinit var deleteDialog: CustomDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,19 +36,23 @@ class MainActivity : AppCompatActivity() {
         initView()
     }
 
+
     private fun initView() {
         setRecyclerView()
         setSpinner()
+        initExitDialog()
+
+        keywordNotification = KeywordNotification(this)
         binding.ivNotification.setOnClickListener {
-            //showNotification()
+            keywordNotification.sendNotification()
+        }
+
+        binding.btnFloating.setOnClickListener {
+            binding.recyclerView.smoothScrollToPosition(0)
         }
     }
 
     private fun setRecyclerView() {
-        locationList = arrayOf(
-            "내배캠동", "스파르타동", "내 동네 설정"
-        )
-
         val dataList = mutableListOf<MarketItem>()
         dataList.add(MarketItem(R.drawable.ic_sample1, "산지 한달된 선풍기 팝니다", "이사가서 필요가 없어졌어요 급하게 내놓습니다", "1,000원", "대현동", "서울 서대문구 창천동", 13, 25, false))
         dataList.add(MarketItem(R.drawable.ic_sample2, "김치냉장고", "이사로인해 내놔요", "20,000원", "안마담", "인천 계양구 귤현동", 28, 8, false))
@@ -68,6 +75,26 @@ class MainActivity : AppCompatActivity() {
             DividerItemDecoration(this, LinearLayoutManager.VERTICAL)
         )
 
+        // 플로팅 버튼  fade 효과 & visibility 설정
+        val fadeIn = AlphaAnimation(0f, 1f).apply { duration = 600 }
+        val fadeOut = AlphaAnimation(1f, 0f).apply { duration = 400 }
+        var isTop = true
+
+        binding.recyclerView.addOnScrollListener(object: RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if(!binding.recyclerView.canScrollVertically(-1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    binding.btnFloating.startAnimation(fadeOut)
+                    binding.btnFloating.visibility = View.GONE
+                    isTop = true
+                } else if(isTop) {
+                    binding.btnFloating.visibility = View.VISIBLE
+                    binding.btnFloating.startAnimation(fadeIn)
+                    isTop = false
+                }
+            }
+        })
+
         // Parcelize를 사용해서 클릭된 데이터 상세페이지로 전달
         adapter.itemClick = object : MarketAdapter.ItemClick {
             override fun onClick(view: View, position: Int) {
@@ -79,24 +106,46 @@ class MainActivity : AppCompatActivity() {
                 startActivity(intent)
             }
         }
+
+        // 아이템 삭제
+        adapter.longItemClick = object : MarketAdapter.LongItemClick {
+            override fun onLongClick(view: View, position: Int) {
+                deleteDialog = CustomDialog(this@MainActivity,
+                    getString(R.string.delete_title), getString(R.string.delete_message),
+                    object : ButtonClickListener {
+
+                        override fun onNegativeButtonClick() {
+                            deleteDialog.dismissDialog()
+                        }
+                        override fun onPositiveButtonClick() {
+                            dataList.removeAt(position)
+                            adapter.notifyItemRangeRemoved(position, dataList.size)
+                            deleteDialog.dismissDialog()
+                        }
+                    })
+                deleteDialog.showDialog()
+            }
+        }
     }
 
     private fun setSpinner() {
+        locationList = arrayOf(
+            "내배캠동", "스파르타동", "내 동네 설정"
+        )
+
         binding.spinnerLocation.apply {
-            // 어댑터 설정
-            val arrayAdapter = ArrayAdapter(
+            // 선택된 항목인 경우 텍스트를 볼드체로 설정하는 CustomArrayAdapter 사용
+            val arrayAdapter = CustomArrayAdapter(
                 this@MainActivity,
-                android.R.layout.simple_spinner_item,
                 locationList
             )
             arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             adapter = arrayAdapter
 
-            setSelection(0)
-
+            setSelection(2)
             onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
-                    // 선택되었을 때
+                    setSelection(position)
                 }
                 override fun onNothingSelected(parent: AdapterView<*>) {
                     // 아무것도 선택되지 않았을 때
@@ -105,44 +154,23 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun showAlertDialog() {
-        val dialogView = layoutInflater.inflate(R.layout.dialog, null)
-        val tvCenter = dialogView.findViewById<TextView>(R.id.tv_dialog_title)
-        val tvNum = dialogView.findViewById<TextView>(R.id.tv__dialog_message)
-        val noBtn = dialogView.findViewById<Button>(R.id.btn_negative)
-        val yesBtn = dialogView.findViewById<Button>(R.id.btn_positive)
+    private fun initExitDialog() {
+        exitDialog = CustomDialog(this,
+            getString(R.string.exit_title), getString(R.string.exit_message),
+            object : ButtonClickListener {
 
-        val dialogBuilder = AlertDialog.Builder(this)
-        dialogBuilder.setView(dialogView)
-
-        val dialog = dialogBuilder.create()
-        //아래 두줄 꼭 적어야 drawable 적용 가능
-        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        dialog.window?.requestFeature(Window.FEATURE_NO_TITLE)
-
-        tvCenter.text = getString(R.string.dialog_title)
-        tvNum.text = getString(R.string.dialog_message)
-        noBtn.setOnClickListener {
-            dialog.dismiss()
-        }
-        yesBtn.setOnClickListener {
-            dialog.dismiss()
-            finish()
-        }
-
-        dialog.show()
-
-        // 화면 넓이의 70%로 다이얼로그 크기 설정
-        val window = dialog.window
-        val size = android.graphics.Point()
-        val display = window?.windowManager?.defaultDisplay
-        display?.getSize(size)
-        val width = (size.x * 0.7).toInt()
-        window?.setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT)
+                override fun onNegativeButtonClick() {
+                    exitDialog.dismissDialog()
+                }
+                override fun onPositiveButtonClick() {
+                    finish()
+                    exitDialog.dismissDialog()
+                }
+            })
     }
 
     // 뒤로가기(BACK)버튼 클릭시 종료 다이얼로그
     override fun onBackPressed() {
-        showAlertDialog()
+        exitDialog.showDialog()
     }
 }

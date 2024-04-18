@@ -54,8 +54,8 @@
 
     <!-- button -->
     <style name="floatingButton" parent="Widget.MaterialComponents.FloatingActionButton">
-        <item name="backgroundTint">@color/white</item>
-        <item name="tint">@color/grey</item>
+        <item name="backgroundTint">@color/main</item>
+        <item name="tint">@color/white</item>
         <item name="shapeAppearanceOverlay">@style/RoundedShapeAppearanceOverlay</item>
     </style>
     <style name="RoundedShapeAppearanceOverlay" parent="">
