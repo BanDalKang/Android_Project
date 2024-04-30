@@ -1,14 +1,12 @@
 package com.example.applemarket
 
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
-import android.graphics.Rect
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.applemarket.databinding.ItemRecyclerviewBinding
+import com.example.applemarket.model.MarketItem
+import java.text.DecimalFormat
 
 class MarketAdapter(private val mItems: MutableList<MarketItem>) : RecyclerView.Adapter<MarketAdapter.Holder>() {
 
@@ -16,12 +14,12 @@ class MarketAdapter(private val mItems: MutableList<MarketItem>) : RecyclerView.
         fun onClick(view : View, position : Int)
     }
 
-    interface LongItemClick {
+    interface ItemLongClick {
         fun onLongClick(view : View, position : Int)
     }
 
     var itemClick : ItemClick? = null
-    var longItemClick : LongItemClick? = null
+    var itemLongClick : ItemLongClick? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val binding = ItemRecyclerviewBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -32,10 +30,16 @@ class MarketAdapter(private val mItems: MutableList<MarketItem>) : RecyclerView.
         holder.itemView.setOnClickListener {
             itemClick?.onClick(it, position)
         }
+        holder.itemView.setOnLongClickListener() OnLongClickListener@{
+            itemLongClick?.onLongClick(it, position)
+            return@OnLongClickListener true
+        }
+
         holder.itemImage.setImageResource(mItems[position].itemImage)
         holder.itemTitle.text = mItems[position].itemTitle
         holder.userAddress.text = mItems[position].userAddress
-        holder.itemPrice.text = mItems[position].itemPrice
+        val price = mItems[position].itemPrice
+        holder.itemPrice.text = DecimalFormat("#,###").format(price)+"원"
         holder.itemChatCount.text = mItems[position].itemChatCount.toString()
         holder.itemLikeCount.text = mItems[position].itemLikeCount.toString()
         if(mItems[position].isLiked)
@@ -72,7 +76,7 @@ class MarketAdapter(private val mItems: MutableList<MarketItem>) : RecyclerView.
             binding.root.setOnLongClickListener {
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
-                    longItemClick?.onLongClick(it, position)
+                    itemLongClick?.onLongClick(it, position)
                     true
                 } else {
                     false
