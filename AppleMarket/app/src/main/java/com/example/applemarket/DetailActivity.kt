@@ -3,19 +3,34 @@ package com.example.applemarket
 import android.content.Intent
 import android.graphics.Paint
 import android.graphics.Typeface
+import android.os.Build
 import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.StyleSpan
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import com.example.applemarket.databinding.ActivityDetailBinding
+import com.example.applemarket.model.MarketItem
 import com.google.android.material.snackbar.Snackbar
+import java.text.DecimalFormat
 
 class DetailActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDetailBinding
     private var isLiked = false
+
+    private val item: MarketItem? by lazy {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            intent.getParcelableExtra(Constants.ITEM_OBJECT, MarketItem::class.java)
+        } else {
+            intent.getParcelableExtra<MarketItem>(Constants.ITEM_OBJECT)
+        }
+    }
+    private val itemPosition: Int by lazy {
+        intent.getIntExtra(Constants.ITEM_INDEX,0)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,20 +53,24 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun setData() {
-        val clickedItem = intent.getParcelableExtra<MarketItem>("clickedItem")
-        clickedItem?.let {
-            binding.ivDetailItem.setImageResource(it.itemImage)
-            binding.tvDetailTitle.text = it.itemTitle
-            binding.tvDetailContent.text = it.itemContent
-            binding.tvDetailPrice.text = it.itemPrice
-            binding.tvUserName.text = it.userName
-            binding.tvUserAddress.text = it.userAddress
-            isLiked = it.isLiked == true
-            binding.ivLikeBtn.setImageResource(
-                if (isLiked) {R.drawable.ic_like_full}
-                else {R.drawable.ic_like_empty}
+        binding.ivDetailImage.setImageDrawable(item?.let {
+            ResourcesCompat.getDrawable(
+                resources,
+                it.itemImage,
+                null
             )
-        }
+        })
+        binding.tvDetailTitle.text = item?.itemTitle
+        binding.tvDetailContent.text = item?.itemContent
+        binding.tvDetailPrice.text = DecimalFormat("#,###").format(item?.itemPrice) + "원"
+        binding.tvUserName.text = item?.userName
+        binding.tvUserAddress.text = item?.userAddress
+        isLiked = item?.isLiked == true
+        binding.ivLikeBtn.setImageResource(
+            if (isLiked) {R.drawable.ic_like_full}
+            else {R.drawable.ic_like_empty}
+        )
+
     }
 
     // 텍스트 밑줄 그리기
@@ -62,8 +81,8 @@ class DetailActivity : AppCompatActivity() {
     private fun addWishList() {
         if(!isLiked){
             binding.ivLikeBtn.setImageResource(R.drawable.ic_like_full)
-            isLiked = true
             showSnackbar()
+            isLiked = true
         }else {
             binding.ivLikeBtn.setImageResource(R.drawable.ic_like_empty)
             isLiked = false
@@ -92,9 +111,8 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun exit() {
-        val likePosition = intent.getIntExtra("likePosition", 0)
         val intent = Intent(this, MainActivity::class.java).apply {
-            putExtra("likePosition", likePosition)
+            putExtra("itemIndex", itemPosition)
             putExtra("isLiked", isLiked)
         }
         setResult(RESULT_OK, intent)
