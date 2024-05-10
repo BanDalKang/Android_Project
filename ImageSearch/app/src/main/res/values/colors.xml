@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <!--yellow -->
+    <color name="md_yellow_50">#FFFDE7</color>
+    <color name="md_yellow_100">#FFF9C4</color>
+    <color name="md_yellow_200">#FFF590</color>
+    <color name="md_yellow_300">#FFF176</color>
+    <color name="md_yellow_400">#FFEE58</color>
+    <color name="md_yellow_500">#FFEB3B</color>
+    <color name="md_yellow_600">#FDD835</color>
+    <color name="md_yellow_700">#FBC02D</color>
+    <color name="md_yellow_800">#F9A825</color>
+    <color name="md_yellow_900">#F57F17</color>
+    <color name="md_yellow_A100">#FFFF82</color>
+    <color name="md_yellow_A200">#FFFF00</color>
+    <color name="md_yellow_A400">#FFEA00</color>
+    <color name="md_yellow_A700">#FFD600</color>
+
+    <!--grey-->
+    <color name="md_grey_50">#FAFAFA</color>
+    <color name="md_grey_100">#F5F5F5</color>
+    <color name="md_grey_200">#EEEEEE</color>
+    <color name="md_grey_300">#E0E0E0</color>
+    <color name="md_grey_400">#BDBDBD</color>
+    <color name="md_grey_500">#9E9E9E</color>
+    <color name="md_grey_600">#757575</color>
+    <color name="md_grey_700">#616161</color>
+    <color name="md_grey_800">#424242</color>
+    <color name="md_grey_900">#212121</color>
+    <color name="md_black_1000">#000000</color>
+    <color name="md_white_1000">#ffffff</color>
+</resources>
